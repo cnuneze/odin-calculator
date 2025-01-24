@@ -51,13 +51,28 @@ numberButtons.forEach(button => {
     }
 
     if (valueButton === ".") {
-      if (display.classList.contains('decimal')) {
-        return true;
-      }
+
+      if (display.classList.contains('decimal')) return true;
 
       display.classList.add('decimal');
     }
 
     display.textContent += valueButton;
   })
+});
+
+operationButtons.forEach(button => {
+  button.addEventListener('click', event => {
+    const display = document.querySelector('.operation-text');
+
+    if (
+      display.classList.contains('clear') || 
+      display.classList.contains('second-operand')
+    ) return true;
+
+    const valueButton = button.value;
+
+    display.textContent += ` ${valueButton}`;
+    display.classList.add('second-operand');
+  });
 });
