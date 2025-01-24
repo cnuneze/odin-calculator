@@ -45,16 +45,22 @@ numberButtons.forEach(button => {
   button.addEventListener('click', event => {
     const display = document.querySelector('.operation-text');
     const valueButton = button.value;
-    if (display.classList.contains('clear')) {
+    const displayClass = display.classList;
+    if (displayClass.contains('clear')) {
       display.textContent = '';
-      display.classList.remove('clear');
+      displayClass.remove('clear');
+    }
+
+    if (displayClass.contains('second-operand')) {
+      display.textContent += ' ';
+      displayClass.remove('decimal', 'second-operand');
     }
 
     if (valueButton === ".") {
 
-      if (display.classList.contains('decimal')) return true;
+      if (displayClass.contains('decimal')) return true;
 
-      display.classList.add('decimal');
+      displayClass.add('decimal');
     }
 
     display.textContent += valueButton;
@@ -67,12 +73,12 @@ operationButtons.forEach(button => {
 
     if (
       display.classList.contains('clear') || 
-      display.classList.contains('second-operand')
+      display.classList.contains('operation')
     ) return true;
 
     const valueButton = button.value;
 
     display.textContent += ` ${valueButton}`;
-    display.classList.add('second-operand');
+    display.classList.add('operation', 'second-operand');
   });
 });
