@@ -50,6 +50,14 @@ numberButtons.forEach(button => {
       display.classList.remove('clear');
     }
 
+    if (valueButton === ".") {
+      if (display.classList.contains('decimal')) {
+        return true;
+      }
+
+      display.classList.add('decimal');
+    }
+
     display.textContent += valueButton;
   })
 });
