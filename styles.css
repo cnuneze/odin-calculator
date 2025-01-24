@@ -1,3 +1,31 @@
 * {
     box-sizing: border-box;
 }
+
+.calculator-container {
+    width: 600px;
+    margin: 0 auto;
+}
+
+.calculator-display {
+    padding: 30px;
+    background-color: aqua;
+    height: 150px;
+}
+
+.operation-text {
+    text-align: right;
+    background-color: #fff;
+    width: 100%;
+    height: 100%;
+}
+
+.button-row button {
+    flex: 1;
+    height: 100px;
+}
+
+/* Util classes */
+.flex {
+    display: flex;
+}
