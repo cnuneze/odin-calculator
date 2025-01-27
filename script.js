@@ -39,13 +39,15 @@ const calculator = {
 
 // Events
 const numberButtons = document.querySelectorAll('.btn-number');
-const operationButtons = document.querySelectorAll('.btn-operation')
+const operationButtons = document.querySelectorAll('.btn-operation');
+const totalButton = document.querySelector('.btn-total');
 
 numberButtons.forEach(button => {
   button.addEventListener('click', event => {
     const display = document.querySelector('.operation-text');
     const valueButton = button.value;
     const displayClass = display.classList;
+
     if (displayClass.contains('clear')) {
       display.textContent = '';
       displayClass.remove('clear');
@@ -77,8 +79,23 @@ operationButtons.forEach(button => {
     ) return true;
 
     const valueButton = button.value;
+  
+    calculator.firstOperand = parseInt(document.querySelector('.operation-text').textContent);
+    calculator.operation = valueButton;
 
     display.textContent += ` ${valueButton}`;
     display.classList.add('operation', 'second-operand');
   });
+});
+
+totalButton.addEventListener('click', (event) => {
+  // TODO: validate status of operands before operate
+
+  const display = document.querySelector('.operation-text');
+  let operation = display.textContent.split(' ');
+  calculator.secondOperand = operation[2];
+
+  let result = calculator.operate();
+
+  display.textContent += ` = ${result}`;
 });
