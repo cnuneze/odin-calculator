@@ -43,11 +43,19 @@ const display = {
   hasOperation: false,
   enableDecimal: true,
   screen: document.querySelector('.operation-text'),
+  clear: function(){
+    this.isClear = true;
+    this.waitingOperand;
+    this.hasOperation = false;
+    this.enableDecimal = true;
+    this.screen.textContent = "";
+  },
 }
 // Events
 const numberButtons = document.querySelectorAll('.btn-number');
 const operationButtons = document.querySelectorAll('.btn-operation');
 const totalButton = document.querySelector('.btn-total');
+const clearButton = document.querySelector('.btn-clear');
 
 numberButtons.forEach(button => {
   button.addEventListener('click', event => {
@@ -103,3 +111,5 @@ totalButton.addEventListener('click', (event) => {
 
   display.screen.textContent += ` = ${result}`;
 });
+
+clearButton.addEventListener('click', event => display.clear());
