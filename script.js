@@ -3,7 +3,7 @@ console.log("there")
 const calculator = {
   firstOperand: 0,
   secondOperand: 0,
-  operation: '',
+  operation: null,
   operate: function() {
     switch (this.operation) {
       case '+':
@@ -37,20 +37,29 @@ const calculator = {
   },
 }
 
+// Display Logic
 const display = {
-  isClear: true,
-  waitingOperand: false,
-  hasOperation: false,
+  resetInput: true,
   enableDecimal: true,
   screen: document.querySelector('.operation-text'),
-  clear: function(){
-    this.isClear = true;
-    this.waitingOperand;
+  hasOperation: function () {
+    return !(this.operation === null);
+  },
+  clear: function() {
+    this.resetInput = true;
     this.hasOperation = false;
     this.enableDecimal = true;
-    this.screen.textContent = "";
+    this.screen.textContent = "0";
   },
+  write: function(char) {
+    if (this.resetInput) {
+      this.screen.textContent = "";
+      this.resetInput = false;
+    }
+    this.screen.append(char);
+  }
 }
+
 // Events
 const numberButtons = document.querySelectorAll('.btn-number');
 const operationButtons = document.querySelectorAll('.btn-operation');
@@ -61,17 +70,6 @@ numberButtons.forEach(button => {
   button.addEventListener('click', event => {
     const valueButton = button.value;
 
-    if (display.isClear) {
-      display.screen.textContent = '';
-      display.isClear = false;
-    }
-
-    if (display.waitingOperand) {
-      display.screen.textContent += ' ';
-      display.waitingOperand = false;
-      display.enableDecimal = true;
-    }
-
     if (valueButton === ".") {
 
       if (!display.enableDecimal) return true;
@@ -79,37 +77,32 @@ numberButtons.forEach(button => {
       display.enableDecimal = false;
     }
 
-    display.screen.textContent += valueButton;
+    display.write(valueButton);
   })
 });
 
 operationButtons.forEach(button => {
   button.addEventListener('click', event => {
 
-    if ( display.isClear || display.waitingOperand) return true;
+    if ( display.resetInput) return true;
 
     const valueButton = button.value;
   
     calculator.firstOperand = parseInt(document.querySelector('.operation-text').textContent);
     calculator.operation = valueButton;
-
-    display.screen.textContent += ` ${valueButton}`;
-    display.waitingOperand = true;
-    display.hasOperation = true;
+    display.resetInput = true;
   });
 });
 
 totalButton.addEventListener('click', (event) => {
   // TODO: validate status of operands before operate
-  if (!display.hasOperation && display.waitingOperand) return true;
-
-  let operation = display.screen.textContent.split(' ');
+  if (!display.hasOperation() || display.resetInput) return true;
   
-  calculator.secondOperand = parseInt(operation[2]);
+  calculator.secondOperand = parseInt(document.querySelector('.operation-text').textContent);
 
   let result = calculator.operate();
 
-  display.screen.textContent += ` = ${result}`;
+  display.screen.textContent = result;
 });
 
 clearButton.addEventListener('click', event => display.clear());
