@@ -1,5 +1,6 @@
 Calculator TODO:
 - refactorizar pantalla para funcionar con una linea
+    - agregar efecto parpadeo al resetear display
 
 - reiniciar valores al presionar clear
 - redondear resultados con muchos decimales -> probar divisiones
