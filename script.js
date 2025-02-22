@@ -43,11 +43,14 @@ const display = {
   enableDecimal: true,
   screen: document.querySelector('.operation-text'),
   hasOperation: function () {
-    return !(this.operation === null);
+    return !(calculator.operation === null);
   },
   clear: function() {
+    console.log(`operator:  ${calculator.operation}`);
+    calculator.operation = null;
+    calculator.firstOperand = 0;
+    calculator.secondOperand = 0;
     this.resetInput = true;
-    this.hasOperation = false;
     this.enableDecimal = true;
     this.screen.textContent = "0";
   },
