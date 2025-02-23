@@ -39,6 +39,8 @@ const calculator = {
 
 // Display Logic
 const display = {
+  maxValue: 9999999999,
+  maxLength: 10,
   resetInput: true,
   enableDecimal: true,
   screen: document.querySelector('.operation-text'),
@@ -54,12 +56,31 @@ const display = {
     this.enableDecimal = true;
     this.screen.textContent = "0";
   },
-  write: function(char) {
+  write: function(text) {
     if (this.resetInput) {
       this.screen.textContent = "";
       this.resetInput = false;
     }
-    this.screen.append(char);
+    this.screen.append(text);
+  },
+  showResult: function(result) {
+    let outputResult = getOutputResult(result, this.maxLength);
+    this.resetInput = true;
+    this.write(outputResult);
+
+    function getOutputResult(result, maxLength) {
+      
+      if (result > this.maxValue) return this.maxValue;
+
+      let isDecimal = ((`${result}`).split('.')[1] !== undefined);
+      if (!isDecimal) return result;
+      
+      let resultLength = ((`${result}`).length - 1);
+      if (resultLength < maxLength) return result; 
+      
+      let resultFormatted = (`${result}`).substring(0, maxLength);
+      return resultFormatted;
+    }
   }
 }
 
@@ -105,7 +126,7 @@ totalButton.addEventListener('click', (event) => {
 
   let result = calculator.operate();
 
-  display.screen.textContent = result;
+  display.showResult(result);
 });
 
 clearButton.addEventListener('click', event => display.clear());
