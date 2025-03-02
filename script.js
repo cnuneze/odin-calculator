@@ -33,7 +33,16 @@ const calculator = {
     return this.firstOperand * this.secondOperand;
   },
   division: function() {
-    return this.firstOperand / this.secondOperand;
+    try {
+
+      if (this.secondOperand == 0) {
+        throw "Nani!";
+      }
+
+      return this.firstOperand / this.secondOperand;
+    } catch (message) {
+      return message;
+    }
   },
 }
 
