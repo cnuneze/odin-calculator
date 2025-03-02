@@ -65,10 +65,10 @@ const display = {
     this.enableDecimal = true;
     this.screen.textContent = "0";
   },
-  write: function(text) {
+  write: function(text, reset = false) {
     if (this.resetInput) {
       this.screen.textContent = "";
-      this.resetInput = false;
+      this.resetInput = reset;
     }
     this.screen.append(text);
   },
@@ -82,7 +82,7 @@ const display = {
 
     let outputResult = getOutputResult(result, this.maxLength);
     this.resetInput = true;
-    this.write(outputResult);
+    this.write(outputResult, true);
 
     function getOutputResult(result, maxLength) {
       
