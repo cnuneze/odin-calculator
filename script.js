@@ -72,7 +72,14 @@ const display = {
     }
     this.screen.append(text);
   },
-  showResult: function(result) {
+  showResult: function() {
+    // TODO: validate status of operands before operate
+    if (!display.hasOperation() || display.resetInput) return true;
+  
+    calculator.secondOperand = parseInt(document.querySelector('.operation-text').textContent);
+
+    let result = calculator.operate();
+
     let outputResult = getOutputResult(result, this.maxLength);
     this.resetInput = true;
     this.write(outputResult);
@@ -119,6 +126,10 @@ operationButtons.forEach(button => {
 
     if ( display.resetInput) return true;
 
+    if (display.hasOperation()) {
+      display.showResult();
+    }
+
     const valueButton = button.value;
   
     calculator.firstOperand = parseInt(document.querySelector('.operation-text').textContent);
@@ -128,14 +139,7 @@ operationButtons.forEach(button => {
 });
 
 totalButton.addEventListener('click', (event) => {
-  // TODO: validate status of operands before operate
-  if (!display.hasOperation() || display.resetInput) return true;
-  
-  calculator.secondOperand = parseInt(document.querySelector('.operation-text').textContent);
-
-  let result = calculator.operate();
-
-  display.showResult(result);
+  display.showResult();
 });
 
 clearButton.addEventListener('click', event => display.clear());
