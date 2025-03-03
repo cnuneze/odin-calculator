@@ -2,14 +2,11 @@ Calculator TODO:
 - Display:
     - agregar efecto parpadeo al resetear display
 
-- redondear resultados con muchos decimales -> probar divisiones (max 10 caracteres en display)
-- validar division por 0 (usar try, mostrar mensaje)
-- ajustar logica con multiples operandos
+- Ajustar almacenamiento de valores introducidos
 - validar presion de operacion con un operandos
 
 - Ajustar diseño
 
-- Ajustar almacenamiento de valores introducidos
 - reesctructurar logica para llegar al calculo final
 
 Extras:
@@ -19,7 +16,6 @@ Extras:
 
 
 Revisar:
-- numeros presionados en pantalla de resultado
 - presionar seguidamente botones de operacion
 
 Pendientes:
