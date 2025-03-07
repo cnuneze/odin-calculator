@@ -1,8 +1,8 @@
 console.log("there")
 // Calculator Logic
 const calculator = {
-  firstOperand: 0,
-  secondOperand: 0,
+  firstOperand: null,
+  secondOperand: null,
   operation: null,
   operate: function() {
     switch (this.operation) {
@@ -51,6 +51,7 @@ const display = {
   maxValue: 9999999999,
   maxLength: 10,
   resetInput: true,
+  secondOperandMode: false,
   enableDecimal: true,
   screen: document.querySelector('.operation-text'),
   hasOperation: function () {
@@ -59,8 +60,9 @@ const display = {
   clear: function() {
     console.log(`operator:  ${calculator.operation}`);
     calculator.operation = null;
-    calculator.firstOperand = 0;
-    calculator.secondOperand = 0;
+    calculator.firstOperand = null;
+    calculator.secondOperand = null;
+    this.secondOperandMode = false,
     this.resetInput = true;
     this.enableDecimal = true;
     this.screen.textContent = "0";
@@ -76,13 +78,18 @@ const display = {
     // TODO: validate status of operands before operate
     if (!display.hasOperation() || display.resetInput) return true;
   
-    calculator.secondOperand = parseInt(document.querySelector('.operation-text').textContent);
+    calculator.secondOperand = parseInt(display.screen.textContent);
 
     let result = calculator.operate();
-
     let outputResult = getOutputResult(result, this.maxLength);
+    
     this.resetInput = true;
     this.write(outputResult, true);
+
+    calculator.firstOperand = parseInt(display.screen.textContent);
+    calculator.secondOperand = null;
+    this.resetInput = true;
+
 
     function getOutputResult(result, maxLength) {
       
@@ -93,7 +100,7 @@ const display = {
       
       let resultLength = ((`${result}`).length - 1);
       if (resultLength < maxLength) return result; 
-      
+
       let resultFormatted = (`${result}`).substring(0, maxLength);
       return resultFormatted;
     }
@@ -110,6 +117,10 @@ numberButtons.forEach(button => {
   button.addEventListener('click', event => {
     const valueButton = button.value;
 
+    if (display.resetInput && calculator.firstOperand != null) {
+      display.secondOperandMode = true;
+    }
+
     if (valueButton === ".") {
 
       if (!display.enableDecimal) return true;
@@ -124,21 +135,24 @@ numberButtons.forEach(button => {
 operationButtons.forEach(button => {
   button.addEventListener('click', event => {
 
-    if ( display.resetInput) return true;
-
-    if (display.hasOperation()) {
-      display.showResult();
+    if (!display.resetInput) {
+      if (display.secondOperandMode ) {
+        display.secondOperandMode = false;
+        display.showResult();
+      } else {
+        calculator.firstOperand = parseInt(display.screen.textContent);
+      }
+      display.resetInput = true;
+  
     }
 
     const valueButton = button.value;
-  
-    calculator.firstOperand = parseInt(document.querySelector('.operation-text').textContent);
     calculator.operation = valueButton;
-    display.resetInput = true;
+    
   });
 });
 
-totalButton.addEventListener('click', (event) => {
+totalButton.addEventListener('click', event => {
   display.showResult();
 });
 
