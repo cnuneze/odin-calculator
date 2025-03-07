@@ -57,14 +57,16 @@ const display = {
   hasOperation: function () {
     return !(calculator.operation === null);
   },
-  clear: function() {
-    console.log(`operator:  ${calculator.operation}`);
-    calculator.operation = null;
-    calculator.firstOperand = null;
-    calculator.secondOperand = null;
+  reset: function() {
     this.secondOperandMode = false,
     this.resetInput = true;
     this.enableDecimal = true;
+  },
+  clear: function() {
+    this.reset();
+    calculator.operation = null;
+    calculator.firstOperand = null;
+    calculator.secondOperand = null;
     this.screen.textContent = "0";
   },
   write: function(text, reset = false) {
@@ -87,9 +89,7 @@ const display = {
     this.write(outputResult, true);
 
     calculator.firstOperand = parseInt(display.screen.textContent);
-    calculator.secondOperand = null;
-    this.resetInput = true;
-
+    this.reset();
 
     function getOutputResult(result, maxLength) {
       
@@ -141,9 +141,8 @@ operationButtons.forEach(button => {
         display.showResult();
       } else {
         calculator.firstOperand = parseInt(display.screen.textContent);
-      }
-      display.resetInput = true;
-  
+        display.reset();
+      }  
     }
 
     const valueButton = button.value;
